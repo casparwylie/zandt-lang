@@ -1,6 +1,6 @@
 echo
 
-./bin/main_tests
+./bin/main_test
 
 echo
 echo

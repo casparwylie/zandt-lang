@@ -1,1 +1,1 @@
-make main_tests
+make ./bin/main_test
