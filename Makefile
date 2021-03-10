@@ -1,12 +1,26 @@
 CC = g++
 CFLAGS = -std=c++11
-src = $(wildcard ./src/*.cpp)
-src_tests := $(filter-out ./src/main.cpp, $(src)) \
-             $(wildcard ./tests/*.cpp)
 
-main: $(src)
-	$(CC) $(CFLAGS) $(src) -o ./bin/main
+BIN_DIR    = ./bin
+BUILD_DIR  = ./build
+SRC_DIR    = ./src
+TESTS_DIR  = ./tests
 
-main_tests: $(src_tests)
-	$(CC) $(CFLAGS) $(src_tests) -o ./bin/main_tests
+OUTS_MAIN      = $(BIN_DIR)/main
+OUTS_MAIN_TEST = $(BIN_DIR)/main_test
+
+SRCS       = $(wildcard $(SRC_DIR)/*.cpp)
+OBJECTS    = $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+
+main: $(OBJECTS)
+	@echo "LINKING OBJECTS TO EXECUTABLE $(OUTS_MAIN)"
+	$(CC) $(CFLAGS) $^ -o $(OUTS_MAIN)
+	@echo "Done."
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@echo "BUILDING CHANGED OBJECT $@"
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@rm -rf $(BUILD_DIR)/* $(BIN_DIR)/* 
 
