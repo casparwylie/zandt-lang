@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11
+CFLAGS = -std=c++17
 
 BIN_DIR    = ./bin
 BUILD_DIR  = ./build

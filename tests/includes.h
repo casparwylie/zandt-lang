@@ -1,2 +1,2 @@
 #include <iostream>
-#include "scanner_test.h"
+#include "lexer_test.h"
