@@ -6,8 +6,21 @@
 
 typedef std::unordered_map<std::string, LexemeType>::const_iterator iter_keyword;
 
-std::map<std::string, LexemeType> SYMBOL_DICTIONARY = 
+struct SymbolDictComparator
 {
+  bool operator()(const std::string& subject, const std::string& object) const
+  {
+    int subjectSize = subject.size();
+    int objectSize = object.size();
+    if (subjectSize == objectSize) return subject < object;
+    return subjectSize > objectSize;
+  }
+};
+
+std::map<std::string, LexemeType, SymbolDictComparator> SYMBOL_DICTIONARY = 
+{
+  {"!=", NOT_EQUAL},
+  {"##", MULTILINE_COMMENT},
   {"@", AT},
   {"\n", NEWLINE},
   {" ", SPACE},
@@ -15,8 +28,6 @@ std::map<std::string, LexemeType> SYMBOL_DICTIONARY =
   {"{", OPEN_BRACE},
   {"}", CLOSE_BRACE},
   {"=", EQUAL},
-  {"!=", NOT_EQUAL},
-  {"/*", MULTILINE_COMMENT},
 };
 
 std::unordered_map<std::string, LexemeType> KEYWORD_DICTIONARY =
@@ -48,16 +59,18 @@ bool Lexer::checkStaticLexeme()
   {
     int lexemeSize = value.size();
     if (peek(lexemeSize) == value) {
-      
       switch (lexeme)
       {
         case MULTILINE_COMMENT:
-            while (!atSourceEnd() && peek(2) != "*/") advance(1);          
+            advance(lexemeSize);
+            while (peek(2) != "##") {
+              if (atSourceEnd()) throw;
+              advance(1);
+            };          
             advance(2);
             break;
         case HASH:
             while (!atSourceEnd() && peek(1)[0] != '\n') advance(1);          
-            advance(1);
             break;
         case NEWLINE:
             line ++;
@@ -105,7 +118,11 @@ bool Lexer::checkNonStaticLexeme()
 
 LexemeType Lexer::stringLexeme()
 {
-  while (!atSourceEnd() && peek(1)[0] != '"') advance(1);
+  while (peek(1)[0] != '"')
+  {
+    if (atSourceEnd()) throw;
+    advance(1);
+  }
   advance(1);
   return STRING;
 }
