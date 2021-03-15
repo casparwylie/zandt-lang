@@ -72,19 +72,19 @@ bool Lexer::checkStaticLexeme()
             while (peek(2) != "##") {
               if (atSourceEnd()) Errors::SyntaxError(
                 "Unclosed multi-line commeiiint", line);
-              advance(1);
+              advance();
             };          
             advance(2);
             break;
         case HASH:
-            while (!atSourceEnd() && source[cursor] != '\n') advance(1);
+            while (!atSourceEnd() && source[cursor] != '\n') advance();
             break;
         case NEWLINE:
             line ++;
-            advance(1);
+            advance();
             break;
         case SPACE:
-            advance(1);
+            advance();
             break;
         default:
           lexemes.push_back(Lexeme{lexeme, value});
@@ -129,24 +129,24 @@ LexemeType Lexer::stringLexeme(char &startChar)
   char nextChar;
   do {
     if (atSourceEnd()) Errors::SyntaxError("Unclosed string", line);
-    advance(1);
+    advance();
     nextChar = source[cursor];
   }
   while ((startChar == '"' && nextChar != '"') ||
          (startChar == '\'' && nextChar != '\''));
-  advance(1);
+  advance();
   return STRING;
 }
 
 LexemeType Lexer::numberLexeme()
 {
-  while (!atSourceEnd() && isdigit(source[cursor])) advance(1);
+  while (!atSourceEnd() && isdigit(source[cursor])) advance();
   return NUMBER;
 }
 
 LexemeType Lexer::wordLexeme()
 {
-  while (!atSourceEnd() && isalpha(source[cursor])) advance(1);
+  while (!atSourceEnd() && isalpha(source[cursor])) advance();
   return WORD;
 }
 

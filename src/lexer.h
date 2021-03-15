@@ -37,7 +37,7 @@ class Lexer {
     bool checkNonStaticLexeme();
     bool atSourceEnd();
     std::string peek(int distance);
-    void advance(int distance);
+    void advance(int distance = 1);
     LexemeType stringLexeme(char &startChar);
     LexemeType numberLexeme();
     LexemeType wordLexeme();
