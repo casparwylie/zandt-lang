@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++17
+CFLAGS = -std=c++17 -MMD
 
 BIN_DIR    = ./bin
 BUILD_DIR  = ./build
@@ -17,6 +17,10 @@ SRCS_TEST := $(filter-out $(TESTS_DIR)/main.cpp, \
 
 OBJECT_SRCS      := $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 OBJECT_SRCS_TEST := $(SRCS_TEST:$(TESTS_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+
+
+DEPENDENCIES := $(OBJECT_SRCS:.o=.d)
+TEST_DEPENDENCIES := $(OBJECT_SRCS:.o=.d)
 
 $(OUTS_MAIN): $(OBJECT_SRCS)
 	@echo "LINKING OBJECTS TO EXECUTABLE $(OUTS_MAIN)"
@@ -37,6 +41,8 @@ $(BUILD_DIR)/%_test.o: $(TESTS_DIR)/%_test.cpp
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo "BUILDING CHANGED OBJECT $@"
 	$(CC) $(CFLAGS) -c $< -o $@
+
+-include $(DEPENDENCIES) $(TEST_DEPENDENCIES)
 
 clean:
 	@rm -rf $(BUILD_DIR)/* $(BIN_DIR)/* 

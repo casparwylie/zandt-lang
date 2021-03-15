@@ -3,12 +3,16 @@
 #include <unordered_map>
 
 #include "lexer.h"
+#include "errors.h"
 
-typedef std::unordered_map<std::string, LexemeType>::const_iterator iter_keyword;
+
+typedef std::unordered_map<
+  std::string, LexemeType>::const_iterator iter_keyword;
 
 struct SymbolDictComparator
 {
-  bool operator()(const std::string& subject, const std::string& object) const
+  bool operator()(
+    const std::string& subject, const std::string& object) const
   {
     int subjectSize = subject.size();
     int objectSize = object.size();
@@ -48,10 +52,12 @@ void Lexer::scan()
   while (!atSourceEnd()) {
     if (checkStaticLexeme()) continue;
     if (checkNonStaticLexeme()) continue;
-    std::cout << "\n\n Invalid syntax, line " << line << "\n\n";
+    Errors::SyntaxError(
+      "Unexpected character " + std::string(1, source[cursor]), line);
     break;
   }
 }
+
 
 bool Lexer::checkStaticLexeme()
 {
@@ -64,13 +70,14 @@ bool Lexer::checkStaticLexeme()
         case MULTILINE_COMMENT:
             advance(lexemeSize);
             while (peek(2) != "##") {
-              if (atSourceEnd()) throw;
+              if (atSourceEnd()) Errors::SyntaxError(
+                "Unclosed multi-line commeiiint", line);
               advance(1);
             };          
             advance(2);
             break;
         case HASH:
-            while (!atSourceEnd() && peek(1)[0] != '\n') advance(1);          
+            while (!atSourceEnd() && peek(1)[0] != '\n') advance(1);
             break;
         case NEWLINE:
             line ++;
@@ -89,15 +96,16 @@ bool Lexer::checkStaticLexeme()
   return false;
 }
 
+
 bool Lexer::checkNonStaticLexeme()
 {
   LexemeType lexeme = _;
   int startCursor = cursor;
   char character = peek(1)[0];
-  advance(1);
   switch (character)
   {
     case '"':
+      advance(1);
       lexeme = stringLexeme();
       break;
     default:
@@ -120,7 +128,7 @@ LexemeType Lexer::stringLexeme()
 {
   while (peek(1)[0] != '"')
   {
-    if (atSourceEnd()) throw;
+    if (atSourceEnd()) Errors::SyntaxError("Unclosed string", line);
     advance(1);
   }
   advance(1);
