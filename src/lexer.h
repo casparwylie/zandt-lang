@@ -38,7 +38,7 @@ class Lexer {
     bool atSourceEnd();
     std::string peek(int distance);
     void advance(int distance);
-    LexemeType stringLexeme();
+    LexemeType stringLexeme(char &startChar);
     LexemeType numberLexeme();
     LexemeType wordLexeme();
     LexemeType keywordLexeme(std::string value);

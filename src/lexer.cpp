@@ -77,7 +77,7 @@ bool Lexer::checkStaticLexeme()
             advance(2);
             break;
         case HASH:
-            while (!atSourceEnd() && peek(1)[0] != '\n') advance(1);
+            while (!atSourceEnd() && source[cursor] != '\n') advance(1);
             break;
         case NEWLINE:
             line ++;
@@ -101,12 +101,12 @@ bool Lexer::checkNonStaticLexeme()
 {
   LexemeType lexeme = _;
   int startCursor = cursor;
-  char character = peek(1)[0];
+  char character = source[cursor];
   switch (character)
   {
     case '"':
-      advance(1);
-      lexeme = stringLexeme();
+    case '\'':
+      lexeme = stringLexeme(character);
       break;
     default:
       if (isdigit(character))
@@ -124,26 +124,29 @@ bool Lexer::checkNonStaticLexeme()
   return true;
 }
 
-LexemeType Lexer::stringLexeme()
+LexemeType Lexer::stringLexeme(char &startChar)
 {
-  while (peek(1)[0] != '"')
-  {
+  char nextChar;
+  do {
     if (atSourceEnd()) Errors::SyntaxError("Unclosed string", line);
     advance(1);
+    nextChar = source[cursor];
   }
+  while ((startChar == '"' && nextChar != '"') ||
+         (startChar == '\'' && nextChar != '\''));
   advance(1);
   return STRING;
 }
 
 LexemeType Lexer::numberLexeme()
 {
-  while (!atSourceEnd() && isdigit(peek(1)[0])) advance(1);
+  while (!atSourceEnd() && isdigit(source[cursor])) advance(1);
   return NUMBER;
 }
 
 LexemeType Lexer::wordLexeme()
 {
-  while (!atSourceEnd() && isalpha(peek(1)[0])) advance(1);
+  while (!atSourceEnd() && isalpha(source[cursor])) advance(1);
   return WORD;
 }
 
