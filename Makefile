@@ -37,6 +37,10 @@ $(BUILD_DIR)/%_test.o: $(TESTS_DIR)/%_test.cpp
 	@echo "BUILDING CHANGED TEST OBJECT $@"
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(BUILD_DIR)/utils.o: $(TESTS_DIR)/utils.cpp $(TESTS_DIR)/utils.h
+	@echo "BUILDING CHANGED TEST UTIL $@"
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(BUILD_DIR)/tmain.o: $(TESTS_DIR)/$(MAIN_FILE)
 	@echo "BUILDING CHANGED TMAIN $@"
 	 $(CC) $(CFLAGS) -c $^ -o ./build/tmain.o

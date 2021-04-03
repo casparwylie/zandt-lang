@@ -71,7 +71,7 @@ bool Lexer::checkStaticLexeme()
             advance(lexemeSize);
             while (peek(2) != "##") {
               if (atSourceEnd()) Errors::SyntaxError(
-                "Unclosed multi-line commeiiint", line);
+                "Unclosed multi-line comment", line);
               advance();
             };          
             advance(2);
@@ -166,6 +166,7 @@ void Lexer::advance(int distance)
 {
   cursor += distance;
 }
+
 
 bool Lexer::atSourceEnd()
 {

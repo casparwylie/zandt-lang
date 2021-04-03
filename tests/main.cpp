@@ -1,6 +1,9 @@
 #include "includes.h"
 
 int main() {
-  test_test1();
+  TestSummary summary;
+  summary.addResult(LexerTest().test_advance());
+  summary.addResult(LexerTest().test_peek());
+  summary.report();
   return 0;
 }
