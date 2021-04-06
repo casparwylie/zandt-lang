@@ -35,5 +35,4 @@ void Errors::SyntaxError::show()
 void Errors::SyntaxError::callback()
 {
   std::cout << "\nExiting";
-  std::exit(0);
 }

@@ -1,5 +1,9 @@
 #include "includes.h"
 
-int main() {
-  std::cout << "Main...";
+int main()
+{
+  Lexer lexer("abc");
+  lexer.scan();
+
+  return 0;
 }

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+#include "../src/errors.h"
+
 
 enum TestStatus { PASSED, FAILED };
 
@@ -21,6 +23,7 @@ class BaseTest
     std::string name;
   protected:
     void zassert(bool condition, std::string description);
+    void zassertError(void (*test)(), ErrorType expectedErrorType, std::string message);
 };
 
 

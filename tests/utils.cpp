@@ -49,3 +49,17 @@ void BaseTest::zassert(bool condition, std::string description)
   TestStatus status = (condition) ? PASSED: FAILED;
   results.push_back(TestResult{status, description, name});
 }
+
+
+void BaseTest::zassertError(
+  void (*test)(), ErrorType expectedErrorType, std::string message)
+{
+  std::cout.setstate(std::ios_base::failbit);
+  try {
+    test();
+    zassert(false, message);
+  } catch (Errors::BaseError &actualError) {
+    zassert(actualError.type == expectedErrorType, message);
+  }
+  std::cout.clear();
+}

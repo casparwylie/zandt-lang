@@ -52,7 +52,7 @@ void Lexer::scan()
   while (!atSourceEnd()) {
     if (checkStaticLexeme()) continue;
     if (checkNonStaticLexeme()) continue;
-    Errors::SyntaxError(
+    throw Errors::SyntaxError(
       "Unexpected character " + std::string(1, source[cursor]), line);
     break;
   }
@@ -70,7 +70,7 @@ bool Lexer::checkStaticLexeme()
         case MULTILINE_COMMENT:
             advance(lexemeSize);
             while (peek(2) != "##") {
-              if (atSourceEnd()) Errors::SyntaxError(
+              if (atSourceEnd()) throw Errors::SyntaxError(
                 "Unclosed multi-line comment", line);
               advance();
             };          
@@ -128,7 +128,7 @@ LexemeType Lexer::stringLexeme(char &startChar)
 {
   char nextChar;
   do {
-    if (atSourceEnd()) Errors::SyntaxError("Unclosed string", line);
+    if (atSourceEnd()) throw Errors::SyntaxError("Unclosed string", line);
     advance();
     nextChar = source[cursor];
   }

@@ -12,8 +12,8 @@ namespace Errors
     std::string message;
     ErrorType type;
 
-    virtual void callback() {};
-    virtual void show() {};
+    virtual void callback() = 0;
+    virtual void show() = 0;
   };
   
   struct Error: BaseError
