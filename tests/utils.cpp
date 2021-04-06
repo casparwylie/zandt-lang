@@ -58,7 +58,8 @@ void BaseTest::zassertError(
   try {
     test();
     zassert(false, message);
-  } catch (Errors::BaseError &actualError) {
+  } catch (Errors::BaseError &actualError)
+  {
     zassert(actualError.type == expectedErrorType, message);
   }
   std::cout.clear();

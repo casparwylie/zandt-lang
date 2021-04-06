@@ -79,7 +79,8 @@ LexerTest* LexerTest::test_stringLexeme()
   LexemeType result2 = lexer2.stringLexeme(lexer2.source[0]);
   zassert(lexer2.cursor == 6, "Double quoted string correctly advanced over");
 
-  zassertError([](){
+  zassertError([]()
+  {
     Lexer lexer3("'test\" abc");
     lexer3.stringLexeme(lexer3.source[0]);
   }, SYNTAX_ERROR, "Unmatched quoted string throws syntax error");
