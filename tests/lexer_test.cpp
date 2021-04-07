@@ -87,3 +87,29 @@ LexerTest* LexerTest::test_stringLexeme()
 
   return this;
 }
+
+
+LexerTest* LexerTest::test_checkNonStaticLexeme()
+{
+  auto test = [=](
+    std::string source,
+    std::string expectedLiteral,
+    LexemeType expectedLexemeType,
+    std::string message)
+  {
+    Lexer lexer(source);
+    bool result = lexer.checkNonStaticLexeme();
+    Lexeme actualLexeme = lexer.lexemes[0];
+    zassert(
+      result &&
+      actualLexeme.type == expectedLexemeType &&
+      actualLexeme.literal == expectedLiteral, message);
+  };
+
+  test("'test' abc", "'test'", STRING, "Non-static string lexeme detected and registered");
+  test("123 'test'", "123", NUMBER, "Non-static number lexeme detected and registered");
+  test("abc 123", "abc", WORD, "Non-static word lexeme detected and registered");
+  test("true abc", "true", TRUE, "Non-static keyword lexeme detected and registered");
+  zassert(!Lexer(" $ abc").checkNonStaticLexeme(), "Static lexeme undetected and ignored");
+  return this;
+}

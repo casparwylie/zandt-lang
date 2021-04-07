@@ -9,6 +9,7 @@ int main() {
   summary.addResult(LexerTest().test_wordLexeme());
   summary.addResult(LexerTest().test_numberLexeme());
   summary.addResult(LexerTest().test_stringLexeme());
+  summary.addResult(LexerTest().test_checkNonStaticLexeme());
   summary.report();
   return 0;
 }
