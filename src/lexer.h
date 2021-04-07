@@ -2,7 +2,8 @@
 #include <unordered_map>
 
 
-enum LexemeType {
+enum LexemeType
+{
   // 0
   _,
 
@@ -17,12 +18,16 @@ enum LexemeType {
   WORD, NUMBER, STRING
 };
 
-struct Lexeme {
+
+struct Lexeme
+{
   LexemeType type;
   std::string literal;
 };
 
-class Lexer {
+
+class Lexer
+{
   public:
     std::string source;
     int sourceSize;
