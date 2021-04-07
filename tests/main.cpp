@@ -1,6 +1,7 @@
 #include "includes.h"
 
-int main() {
+int main()
+{
   TestSummary summary;
   summary.addResult(LexerTest().test_advance());
   summary.addResult(LexerTest().test_peek());
@@ -10,6 +11,7 @@ int main() {
   summary.addResult(LexerTest().test_numberLexeme());
   summary.addResult(LexerTest().test_stringLexeme());
   summary.addResult(LexerTest().test_checkNonStaticLexeme());
+  summary.addResult(LexerTest().test_checkStaticLexeme());
   summary.report();
   return 0;
 }

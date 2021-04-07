@@ -83,7 +83,13 @@ LexerTest* LexerTest::test_stringLexeme()
   {
     Lexer lexer3("'test\" abc");
     lexer3.stringLexeme(lexer3.source[0]);
-  }, SYNTAX_ERROR, "Unmatched quoted string throws syntax error");
+  }, SYNTAX_ERROR, "Unmatched single quoted string throws syntax error");
+
+  zassertError([]()
+  {
+    Lexer lexer3("\"test' abc");
+    lexer3.stringLexeme(lexer3.source[0]);
+  }, SYNTAX_ERROR, "Unmatched double quoted string throws syntax error");
 
   return this;
 }
@@ -113,3 +119,34 @@ LexerTest* LexerTest::test_checkNonStaticLexeme()
   zassert(!Lexer(" $ abc").checkNonStaticLexeme(), "Static lexeme undetected and ignored");
   return this;
 }
+
+
+LexerTest* LexerTest::test_checkStaticLexeme()
+{
+  Lexer lexer1("!=@{}##!==##@  =");
+  while(!lexer1.atSourceEnd()) lexer1.checkStaticLexeme();
+  zassert(
+    lexer1.lexemes[0].type == NOT_EQUAL &&
+    lexer1.lexemes[1].type == AT &&
+    lexer1.lexemes[2].type == OPEN_BRACE &&
+    lexer1.lexemes[3].type == CLOSE_BRACE &&
+    lexer1.lexemes[4].type == AT &&
+    lexer1.lexemes[5].type == EQUAL,
+    "Static lexemes are consumed while comments and spaces skipped");
+
+  Lexer lexer2("!=# ignore this \n @");
+  while(!lexer2.atSourceEnd()) lexer2.checkStaticLexeme();
+  zassert(
+    lexer2.lexemes[0].type == NOT_EQUAL &&
+    lexer2.lexemes[1].type == AT,
+  "Single line comment is correctly ignored");
+
+  zassertError([]()
+  {
+    Lexer lexer3("!=##ignore this \n @");
+    while(true) lexer3.checkStaticLexeme();
+  }, SYNTAX_ERROR, "Unclosed multi-line comment throws syntax error");
+
+  return this;
+}
+
