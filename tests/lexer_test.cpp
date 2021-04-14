@@ -150,3 +150,25 @@ LexerTest* LexerTest::test_checkStaticLexeme()
   return this;
 }
 
+
+LexerTest* LexerTest::test_scan()
+{
+  Lexer lexer1("abc  123 @ != = ## test ## ? 'str'");
+  lexer1.scan();
+  zassert(
+    lexer1.lexemes[0].type == WORD && lexer1.lexemes[0].literal == "abc" &&
+    lexer1.lexemes[1].type == NUMBER && lexer1.lexemes[1].literal == "123" &&
+    lexer1.lexemes[2].type == AT &&
+    lexer1.lexemes[3].type == NOT_EQUAL &&
+    lexer1.lexemes[4].type == EQUAL &&
+    lexer1.lexemes[5].type == QUESTION &&
+    lexer1.lexemes[6].type == STRING && lexer1.lexemes[6].literal == "'str'",
+    "All lexemes are correctly scanned");
+  
+  zassertError([]()
+  {
+    Lexer lexer2("abc  123 ~ @ != = ## test ## ? 'str'");
+    lexer2.scan();
+  }, SYNTAX_ERROR, "Unexpected character throws syntax error");
+  return this;
+}

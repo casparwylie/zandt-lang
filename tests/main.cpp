@@ -12,6 +12,7 @@ int main()
   summary.addResult(LexerTest().test_stringLexeme());
   summary.addResult(LexerTest().test_checkNonStaticLexeme());
   summary.addResult(LexerTest().test_checkStaticLexeme());
+  summary.addResult(LexerTest().test_scan());
   summary.report();
   return 0;
 }

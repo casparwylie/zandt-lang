@@ -14,5 +14,6 @@ class LexerTest: public BaseTest
     LexerTest* test_stringLexeme();
     LexerTest* test_checkNonStaticLexeme();
     LexerTest* test_checkStaticLexeme();
+    LexerTest* test_scan();
 };
 

@@ -31,6 +31,7 @@ std::map<std::string, LexemeType, SymbolDictComparator> SYMBOL_DICTIONARY =
   {"\n", NEWLINE},
   {" ", SPACE},
   {"#", HASH},
+  {"?", QUESTION},
   {"{", OPEN_BRACE},
   {"}", CLOSE_BRACE},
   {"=", EQUAL},
