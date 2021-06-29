@@ -13,6 +13,8 @@ int main()
   summary.addResult(LexerTest().test_checkNonStaticLexeme());
   summary.addResult(LexerTest().test_checkStaticLexeme());
   summary.addResult(LexerTest().test_scan());
+
+  summary.addResult(ParserTest().test_something());
   summary.report();
   return 0;
 }

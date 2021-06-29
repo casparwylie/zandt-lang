@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "utils.h"
+#include "includes.h"
 
 TestSummary::TestSummary(): failed(0) {};
 
@@ -19,12 +19,12 @@ void TestSummary::report()
 {
   for (auto const result: results)
   {
-    std::string displayStatus = (result.status == PASSED) ? 
+    std::string displayStatus = (result.status == PASSED) ?
       "PASSED               " : "* FAILED *           ";
     std::string fullTestSignature = result.group + ": " + result.message;
     std::cout << displayStatus << fullTestSignature << "\n";
   }
-  
+
   int total = getTotalCount();
   if (failed)
   {

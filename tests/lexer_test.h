@@ -1,4 +1,3 @@
-#include "../src/lexer.h"
 
 class LexerTest: public BaseTest
 {

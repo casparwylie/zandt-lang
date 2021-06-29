@@ -2,9 +2,7 @@
 #include <map>
 #include <unordered_map>
 
-#include "lexer.h"
-#include "errors.h"
-
+#include "includes.h"
 
 typedef std::unordered_map<
   std::string, LexemeType>::const_iterator iter_keyword;
@@ -23,7 +21,7 @@ struct SymbolDictComparator
 };
 
 
-std::map<std::string, LexemeType, SymbolDictComparator> SYMBOL_DICTIONARY = 
+std::map<std::string, LexemeType, SymbolDictComparator> SYMBOL_DICTIONARY =
 {
   {"!=", NOT_EQUAL},
   {"##", MULTILINE_COMMENT},
@@ -68,7 +66,7 @@ void Lexer::scan()
 
 bool Lexer::checkStaticLexeme()
 {
-  for (auto const & [value, lexeme]: SYMBOL_DICTIONARY) 
+  for (auto const & [value, lexeme]: SYMBOL_DICTIONARY)
   {
     int lexemeSize = value.size();
     if (peek(lexemeSize) == value)
@@ -82,7 +80,7 @@ bool Lexer::checkStaticLexeme()
               if (atSourceEnd()) throw Errors::SyntaxError(
                 "Unclosed multi-line comment", line);
               advance();
-            };          
+            };
             advance(2);
             break;
         case HASH:
@@ -163,7 +161,7 @@ LexemeType Lexer::wordLexeme()
 }
 
 
-LexemeType Lexer::keywordLexeme(std::string value) 
+LexemeType Lexer::keywordLexeme(std::string value)
 {
   iter_keyword keyword = KEYWORD_DICTIONARY.find(value);
   if (keyword == KEYWORD_DICTIONARY.end()) return WORD;

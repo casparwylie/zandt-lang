@@ -1,8 +1,6 @@
 #include <iostream>
 
-#include "utils.h"
-#include "lexer_test.h"
-
+#include "includes.h"
 
 LexerTest::LexerTest():
   BaseTest("Lexer"),
@@ -12,9 +10,9 @@ LexerTest::LexerTest():
 
 LexerTest* LexerTest::test_advance()
 {
-  
+
   zassert(lexer.cursor == 0, "Cursor starts at 0");
-  lexer.advance(); 
+  lexer.advance();
   zassert(lexer.cursor == 1, "Cursor advanced by 1");
   return this;
 }
@@ -22,7 +20,7 @@ LexerTest* LexerTest::test_advance()
 
 LexerTest* LexerTest::test_peek()
 {
-  std::string actual = lexer.peek(4); 
+  std::string actual = lexer.peek(4);
   zassert(actual == "test", "Peek matches correct string");
   return this;
 }
@@ -164,7 +162,7 @@ LexerTest* LexerTest::test_scan()
     lexer1.lexemes[5].type == QUESTION &&
     lexer1.lexemes[6].type == STRING && lexer1.lexemes[6].literal == "'str'",
     "All lexemes are correctly scanned");
-  
+
   zassertError([]()
   {
     Lexer lexer2("abc  123 ~ @ != = ## test ## ? 'str'");

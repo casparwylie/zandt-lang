@@ -1,9 +1,6 @@
 #include <iostream>
 #include <vector>
 
-#include "../src/errors.h"
-
-
 enum TestStatus { PASSED, FAILED };
 
 
